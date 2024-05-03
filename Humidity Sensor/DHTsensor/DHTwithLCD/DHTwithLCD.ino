@@ -11,6 +11,11 @@
 // (this also requires the Adafruit Unified Sensor Library)
 #include "DHT.h"
 
+
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
 // Arduino pin connected to the DHT-11's data pin.
 #define DHTPIN 9
 
@@ -21,28 +26,29 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
-  // We'll use the serial monitor to display readings.
-  Serial.begin(9600);
-  Serial.println("Humidity and Temperature");
 
+  lcd.begin(16, 2);
   // Start the sensor.
   dht.begin();
 }
 
 void loop() {
   // Wait a few seconds between measurements.
-  delay(2000);
-
-  // Read humidity.
-  float h = dht.readHumidity();
+    float h = dht.readHumidity();
 
   // Read temperature as Celsius (the default)
   float t = dht.readTemperature();
+  lcd.setCursor(0,0); 
+  lcd.print("Temp: ");
+  lcd.print(t);
+  lcd.print((char)223);
+  lcd.print("C");
+  lcd.setCursor(0,1);
+  lcd.print("Humidity: ");
+  lcd.print(h);
+  lcd.print("%");
+  delay(1000);
+  // Read humidity.
 
-  // Send data to serial monitor for display.
-  Serial.print("Humidity: ");
-  Serial.print(h);
-  Serial.print("%  Temperature: ");
-  Serial.print(t);
-  Serial.println("°C");
+
 }
